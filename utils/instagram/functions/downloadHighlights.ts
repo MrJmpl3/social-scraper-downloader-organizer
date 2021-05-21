@@ -1,35 +1,46 @@
 import { resolve } from 'path'
-import delay from 'delay'
 import fs from 'fs-extra'
-import executeCommand from '@/utils/instagram/command'
 import getPathFolder from '@/utils/instagram/paths'
+import executeCommand from '@/utils/shared/executeCommand'
 
 const downloadHighlights = async (
   profile: string,
   altAccount: boolean,
   full: boolean
-) => {
+): Promise<void> => {
+  const date = new Date()
   const folder = getPathFolder()
 
-  const commandParts: string[] = [
-    `instaloader ${profile} --dirname-pattern="{profile}\\highlight\\{target}" --no-profile-pic --no-posts --highlights --no-captions --no-video-thumbnails --request-timeout=300`,
+  const instaloaderArgs: string[] = [
+    profile,
+    '--dirname-pattern={profile}\\highlight\\{target}',
+    '--no-profile-pic',
+    '--no-posts',
+    '--highlights',
+    '--no-captions',
+    '--no-video-thumbnails',
+    '--quiet',
+    '--request-timeout=300',
+    '--abort-on=302,400,429',
   ]
 
   if (altAccount) {
-    commandParts.push(
-      `--login ${process.env.INSTAGRAM_USER_ALT} --password=${process.env.INSTAGRAM_PASSWORD_ALT}`
+    instaloaderArgs.push(
+      `--login=${process.env.INSTAGRAM_USER_ALT}`,
+      `--password=${process.env.INSTAGRAM_PASSWORD_ALT}`
     )
   } else {
-    commandParts.push(
-      `--login ${process.env.INSTAGRAM_USER} --password=${process.env.INSTAGRAM_PASSWORD}`
+    instaloaderArgs.push(
+      `--login=${process.env.INSTAGRAM_USER}`,
+      `--password=${process.env.INSTAGRAM_PASSWORD}`
     )
   }
 
   if (!full) {
-    commandParts.push('--fast-update')
+    instaloaderArgs.push('--fast-update')
   }
 
-  await executeCommand(folder, commandParts.join(' '))
+  await executeCommand('instaloader', instaloaderArgs, folder, date)
 
   if (fs.pathExistsSync(resolve(folder, profile, 'highlight', profile))) {
     fs.readdirSync(resolve(folder, profile, 'highlight', profile)).forEach(
@@ -44,8 +55,6 @@ const downloadHighlights = async (
 
     fs.removeSync(resolve(folder, profile, 'highlight', profile))
   }
-
-  await delay(5 * 60 * 1000)
 }
 
 export default downloadHighlights
