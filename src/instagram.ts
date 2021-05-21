@@ -1,26 +1,26 @@
-import { cac } from "cac";
-import dotenv from "dotenv";
-import { Listr } from "listr2";
-import downloadFeed from "@/tasks/instagram/others/downloadFeed";
-import downloadStories from "@/tasks/instagram/others/downloadStories";
-import downloadProfile from "@/tasks/instagram/profile/downloadProfile";
-import { Context } from "@/utils/instagram/interfaces";
+import { cac } from 'cac'
+import dotenv from 'dotenv'
+import { Listr } from 'listr2'
+import downloadFeed from '@/tasks/instagram/others/downloadFeed'
+import downloadStories from '@/tasks/instagram/others/downloadStories'
+import downloadProfile from '@/tasks/instagram/profile/downloadProfile'
+import { Context } from '@/utils/instagram/interfaces'
 
-dotenv.config();
+dotenv.config()
 
-const parsed = cac().parse();
+const parsed = cac().parse()
 
-const optionStories = !!parsed.options.stories;
-const optionFeed = !!parsed.options.feed;
-const optionFull = !!parsed.options.full;
-const optionAltAccount = !!parsed.options.altAccount;
+const optionStories = !!parsed.options.stories
+const optionFeed = !!parsed.options.feed
+const optionFull = !!parsed.options.full
+const optionAltAccount = !!parsed.options.altAccount
 
-const optionNotStories = !!parsed.options.notStories;
-const optionNotHighlights = !!parsed.options.notHighlights;
-const optionNotTagged = !!parsed.options.notTagged;
-const optionNotIgtv = !!parsed.options.notIgtv;
+const optionNotStories = !!parsed.options.notStories
+const optionNotHighlights = !!parsed.options.notHighlights
+const optionNotTagged = !!parsed.options.notTagged
+const optionNotIgtv = !!parsed.options.notIgtv
 
-(async () => {
+;(async () => {
   const context: Context = {
     full: optionFull,
     altAccount: optionAltAccount,
@@ -28,7 +28,7 @@ const optionNotIgtv = !!parsed.options.notIgtv;
     notIgtv: optionNotIgtv,
     notStories: optionNotStories,
     notTagged: optionNotTagged,
-  };
+  }
 
   const tasks = new Listr<Context>([], {
     rendererOptions: {
@@ -36,12 +36,12 @@ const optionNotIgtv = !!parsed.options.notIgtv;
     },
     ctx: context,
     concurrent: false,
-  });
+  })
 
   if (optionStories) {
-    tasks.add(downloadStories());
+    tasks.add(downloadStories())
   } else if (optionFeed) {
-    tasks.add(downloadFeed());
+    tasks.add(downloadFeed())
   } else {
     tasks.add({
       title: `Download profiles`,
@@ -50,16 +50,16 @@ const optionNotIgtv = !!parsed.options.notIgtv;
           rendererOptions: { showSubtasks: true },
           ctx: context,
           concurrent: false,
-        });
+        })
 
         parsed.args.forEach((value) => {
-          taskProfiles.add(downloadProfile(value));
-        });
+          taskProfiles.add(downloadProfile(value))
+        })
 
-        return taskProfiles;
+        return taskProfiles
       },
-    });
+    })
   }
 
-  await tasks.run();
-})();
+  await tasks.run()
+})()

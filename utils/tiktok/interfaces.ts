@@ -1,1 +1,1 @@
-export type TypePost = "normal" | "advance" | "advanceplus";
+export type TypePost = 'normal' | 'advance' | 'advanceplus'
