@@ -1,5 +1,5 @@
-import axios from 'axios';
-import fs from 'fs-extra';
+import axios from 'axios'
+import fs from 'fs-extra'
 
 const downloadFile = async (
   url: string,
@@ -11,29 +11,29 @@ const downloadFile = async (
     method: 'GET',
     responseType: 'stream',
     timeout: 1000 * 60 * 5,
-  });
+  })
 
   if (headers['content-length'] === '0') {
     return new Promise((resolve1) => {
-      resolve1('zero-size');
-    });
+      resolve1('zero-size')
+    })
   }
 
   if (sizeComparasion !== null) {
     if (headers['content-length'] === sizeComparasion.toString()) {
       return new Promise((resolve2) => {
-        resolve2('skip');
-      });
+        resolve2('skip')
+      })
     }
   }
 
-  const writer = fs.createWriteStream(dest);
-  data.pipe(writer);
+  const writer = fs.createWriteStream(dest)
+  data.pipe(writer)
 
   return new Promise((resolve3, reject) => {
-    writer.on('finish', resolve3);
-    writer.on('error', reject);
-  });
-};
+    writer.on('finish', resolve3)
+    writer.on('error', reject)
+  })
+}
 
-export default downloadFile;
+export default downloadFile

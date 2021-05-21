@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -32,6 +33,9 @@ module.exports = {
         configFile: path.resolve(__dirname, "tsconfig.json"),
       }),
     ],
+    alias: {
+      '@': path.resolve(__dirname),
+    },
   },
   node: {
     __dirname: false,

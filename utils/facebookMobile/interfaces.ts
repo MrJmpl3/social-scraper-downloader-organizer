@@ -1,18 +1,18 @@
 export interface Context {
-  waitTime: number;
+  waitTime: number
 }
 
 export interface Album {
-  id: string;
-  name: string;
-  url: string;
+  id: string
+  name: string
+  url: string
 }
 
 export interface PhotoViewer {
-  url: string;
+  url: string
 }
 
 export interface Photo {
-  type: "original" | "alt";
-  url: string;
+  type: 'original' | 'alt'
+  url: string
 }
