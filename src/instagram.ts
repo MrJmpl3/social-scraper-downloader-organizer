@@ -1,9 +1,9 @@
 import { cac } from 'cac'
 import dotenv from 'dotenv'
 import { Listr } from 'listr2'
-import downloadFeed from '@/tasks/instagram/others/downloadFeed'
-import downloadStories from '@/tasks/instagram/others/downloadStories'
-import downloadProfile from '@/tasks/instagram/profile/downloadProfile'
+import downloadFeed from '@/tasks/instagram/downloadFeed'
+import downloadProfile from '@/tasks/instagram/downloadProfile'
+import downloadStories from '@/tasks/instagram/downloadStories'
 import { Context } from '@/utils/instagram/interfaces'
 
 dotenv.config()
