@@ -1,14 +1,14 @@
 import { getUnixTime } from 'date-fns'
 import execa from 'execa'
 import fs from 'fs-extra'
-import log from '@/utils/shared/log'
+import log from '@/functions/global/log'
 
 const executeCommand = async (
   command: string,
   args: string[],
   folder: string,
   date: Date
-) => {
+): Promise<void> => {
   fs.ensureDirSync(folder)
 
   const child = execa(command, args, {
@@ -16,11 +16,11 @@ const executeCommand = async (
   })
 
   child.stdout?.on('data', (data) => {
-    log(`stdout_${getUnixTime(date)}.log`, data.toString(), false)
+    log(folder, `stdout_${getUnixTime(date)}.log`, data.toString(), false)
   })
 
   child.stderr?.on('data', (data) => {
-    log(`stderr_${getUnixTime(date)}.log`, data.toString(), false)
+    log(folder, `stderr_${getUnixTime(date)}.log`, data.toString(), false)
   })
 
   await child

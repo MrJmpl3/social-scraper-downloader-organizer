@@ -1,6 +1,6 @@
 import { resolve } from 'path'
 
-const getPathFolder = () => {
+const getFolderPath = (): string => {
   if (process.env.INSTAGRAM_FOLDER) {
     return process.env.INSTAGRAM_FOLDER
   }
@@ -8,4 +8,4 @@ const getPathFolder = () => {
   return resolve(__dirname, '..', 'db', 'instagram')
 }
 
-export default getPathFolder
+export default getFolderPath

@@ -1,7 +1,7 @@
 import { resolve } from 'path'
 import fs from 'fs-extra'
-import getPathFolder from '@/utils/instagram/paths'
-import executeCommand from '@/utils/shared/executeCommand'
+import executeCommand from '@/functions/global/executeCommand'
+import getFolderPath from '@/paths/instagram'
 
 const downloadHighlights = async (
   profile: string,
@@ -9,7 +9,7 @@ const downloadHighlights = async (
   full: boolean
 ): Promise<void> => {
   const date = new Date()
-  const folder = getPathFolder()
+  const folder = getFolderPath()
 
   const instaloaderArgs: string[] = [
     profile,

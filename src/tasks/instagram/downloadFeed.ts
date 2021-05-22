@@ -1,17 +1,24 @@
+import { getDate, getMonth, getYear, subDays } from 'date-fns'
 import { ListrTask } from 'listr2'
-import { Context } from '@/utils/instagram/interfaces'
-import getPathFolder from '@/utils/instagram/paths'
-import executeCommand from '@/utils/shared/executeCommand'
+import executeCommand from '@/functions/global/executeCommand'
+import { Context } from '@/interfaces/instagram'
+import getFolderPath from '@/paths/instagram'
 
-const downloadStories = (): ListrTask<Context> => ({
-  title: 'Download stories',
+const downloadFeed = (): ListrTask<Context> => ({
+  title: 'Download feed',
   task: async (ctx) => {
     const date = new Date()
-    const folder = getPathFolder()
+    const folder = getFolderPath()
+
+    const dateLimit = subDays(new Date(), 5)
+    const dateFilter = `${getYear(dateLimit)}, ${
+      getMonth(dateLimit) + 1
+    }, ${getDate(dateLimit)}`
 
     const instaloaderArgs: string[] = [
-      ':stories',
-      '--dirname-pattern={profile}\\stories',
+      ':feed',
+      '--dirname-pattern={profile}\\posts',
+      `--post-filter="date_utc >= datetime(${dateFilter})"`,
       '--no-captions',
       '--no-video-thumbnails',
       '--request-timeout=300',
@@ -37,4 +44,4 @@ const downloadStories = (): ListrTask<Context> => ({
   },
 })
 
-export default downloadStories
+export default downloadFeed

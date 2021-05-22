@@ -14,9 +14,11 @@
     "resolveJsonModule": true,
     "types": ["@types/node"],
     "paths": {
-      "@/src/*": ["./src/*"],
-      "@/tasks/*": ["./tasks/*"],
-      "@/utils/*": ["./utils/*"]
+      "@/functions/*": ["./src/functions/*"],
+      "@/interfaces/*": ["./src/interfaces/*"],
+      "@/paths/*": ["./src/paths/*"],
+      "@/tasks/*": ["./src/tasks/*"],
+      "@/utils/*": ["./src/utils/*"]
     }
   },
   "include": [

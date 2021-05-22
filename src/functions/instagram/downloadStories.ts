@@ -1,17 +1,20 @@
-import getPathFolder from '@/utils/instagram/paths'
-import executeCommand from '@/utils/shared/executeCommand'
+import executeCommand from '@/functions/global/executeCommand'
+import getFolderPath from '@/paths/instagram'
 
-const downloadPosts = async (
+const downloadStories = async (
   profile: string,
   altAccount: boolean,
   full: boolean
 ): Promise<void> => {
   const date = new Date()
-  const folder = getPathFolder()
+  const folder = getFolderPath()
 
   const instaloaderArgs: string[] = [
     profile,
-    '--dirname-pattern={profile}\\posts',
+    '--dirname-pattern={profile}\\stories',
+    '--no-profile-pic',
+    '--no-posts',
+    '--stories',
     '--no-captions',
     '--no-video-thumbnails',
     '--request-timeout=300',
@@ -35,6 +38,6 @@ const downloadPosts = async (
   }
 
   await executeCommand('instaloader', instaloaderArgs, folder, date)
-};
+}
 
-export default downloadPosts;
+export default downloadStories

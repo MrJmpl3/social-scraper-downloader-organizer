@@ -1,20 +1,20 @@
-import getPathFolder from '@/utils/instagram/paths'
-import executeCommand from '@/utils/shared/executeCommand'
+import executeCommand from '@/functions/global/executeCommand'
+import getFolderPath from '@/paths/instagram'
 
-const downloadIgtv = async (
+const downloadTagged = async (
   profile: string,
   altAccount: boolean,
   full: boolean
 ): Promise<void> => {
   const date = new Date()
-  const folder = getPathFolder()
+  const folder = getFolderPath()
 
   const instaloaderArgs: string[] = [
     profile,
-    '--dirname-pattern={profile}\\igtv',
+    `--dirname-pattern=${profile}\\tagged`,
     '--no-profile-pic',
     '--no-posts',
-    '--igtv',
+    '--tagged',
     '--no-captions',
     '--no-video-thumbnails',
     '--request-timeout=300',
@@ -38,6 +38,6 @@ const downloadIgtv = async (
   }
 
   await executeCommand('instaloader', instaloaderArgs, folder, date)
-};
+}
 
-export default downloadIgtv;
+export default downloadTagged

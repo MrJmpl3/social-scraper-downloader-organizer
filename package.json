@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "puppeteer": "^7.1.0",
     "sanitize-filename": "^1.6.3",
-    "tiktok-scraper": "^1.4.16"
+    "tiktok-scraper": "^1.4.23"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
