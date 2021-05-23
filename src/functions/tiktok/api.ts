@@ -5,7 +5,7 @@ import {
   user,
   UserMetadata,
 } from 'tiktok-scraper'
-import { TypePost } from '@/utils/tiktok/interfaces'
+import { TypePost } from '@/interfaces/tiktok'
 
 export const scrapeProfile = async (
   name: string,

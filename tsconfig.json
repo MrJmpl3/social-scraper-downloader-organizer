@@ -17,6 +17,7 @@
       "@/functions/*": ["./src/functions/*"],
       "@/interfaces/*": ["./src/interfaces/*"],
       "@/paths/*": ["./src/paths/*"],
+      "@/subtasks/*": ["./src/subtasks/*"],
       "@/tasks/*": ["./src/tasks/*"],
       "@/utils/*": ["./src/utils/*"]
     }

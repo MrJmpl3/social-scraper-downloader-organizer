@@ -11,7 +11,7 @@ module.exports = {
     // facebook: "./src/facebook.ts",
     // facebookMobile: "./src/commands/facebookMobile.ts",
     instagram: './src/commands/instagram.ts',
-    // tiktok: "./src/commands/tiktok.ts",
+    tiktok: "./src/commands/tiktok.ts",
   },
   output: {
     filename: '[name].bundle.js',
