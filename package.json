@@ -9,7 +9,7 @@
     "instagram": "node dist/instagram.bundle.js",
     "tiktok": "node dist/tiktok.bundle.js",
     "lint": "eslint --ext \".ts\" --ignore-path .gitignore .",
-    "postinstall": "husky install"
+    "postinstall": "husky install && node patcher/patchFiles.js"
   },
   "lint-staged": {
     "*.{ts}": "eslint"
@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "puppeteer": "^7.1.0",
     "sanitize-filename": "^1.6.3",
-    "tiktok-scraper": "^1.4.23"
+    "tiktok-scraper": "1.4.23"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
