@@ -51,7 +51,6 @@ const downloadVideosByType = (
         !existsInVideoDownloaded(videoDownloadedData, post.id, 'advanceplus')
       ) {
         try {
-          // eslint-disable-next-line no-param-reassign
           task.output = `Downloading video with id ${post.id}`
           // eslint-disable-next-line no-await-in-loop
           await downloadVideo(
@@ -76,7 +75,6 @@ const downloadVideosByType = (
         !existsInVideoDownloaded(videoDownloadedData, post.id, 'advance')
       ) {
         try {
-          // eslint-disable-next-line no-param-reassign
           task.output = `Downloading video with id ${post.id}`
           // eslint-disable-next-line no-await-in-loop
           await downloadVideo(
@@ -102,7 +100,6 @@ const downloadVideosByType = (
         !existsInVideoDownloaded(videoDownloadedData, post.id, 'normal')
       ) {
         try {
-          // eslint-disable-next-line no-param-reassign
           task.output = `Downloading video with id ${post.id}`
           // eslint-disable-next-line no-await-in-loop
           await downloadVideo(

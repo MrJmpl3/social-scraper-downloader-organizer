@@ -5,15 +5,15 @@ export interface ContextStories {
 
 export interface ContextFeeds {
   altAccount: boolean
-  feedDays: number,
+  feedDays: number
   full: boolean
 }
 
 export interface ContextProfiles {
   altAccount: boolean
   full: boolean
-  highlights: boolean,
-  igtv: boolean,
-  stories: boolean,
+  highlights: boolean
+  igtv: boolean
+  stories: boolean
   tagged: boolean
 }

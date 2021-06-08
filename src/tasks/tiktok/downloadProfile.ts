@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-
 import { resolve } from 'path'
 import { URL } from 'url'
 import * as fs from 'fs-extra'
