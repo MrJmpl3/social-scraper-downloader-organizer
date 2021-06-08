@@ -8,8 +8,7 @@ module.exports = {
   mode: 'development',
   target: 'node',
   entry: {
-    // facebook: "./src/facebook.ts",
-    // facebookMobile: "./src/commands/facebookMobile.ts",
+    facebook: "./src/commands/facebook.ts",
     instagram: './src/commands/instagram.ts',
     tiktok: "./src/commands/tiktok.ts",
   },

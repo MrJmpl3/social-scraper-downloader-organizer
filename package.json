@@ -5,7 +5,6 @@
   "scripts": {
     "build": "webpack",
     "facebook": "node dist/facebook.bundle.js",
-    "facebookMobile": "node dist/facebookMobile.bundle.js",
     "instagram": "node dist/instagram.bundle.js",
     "tiktok": "node dist/tiktok.bundle.js",
     "lint": "eslint --ext \".ts\" --ignore-path .gitignore .",
