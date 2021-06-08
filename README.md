@@ -25,36 +25,30 @@ If you liked that repos then kindly support it by giving it a star ⭐!
 If you find any bug in the code or have any improvements in mind then feel free to generate a pull request.
 
 ## How to use:
+
 - Clone this repo
 - Install the dependencies with `yarn install`
 - For Instagram, need install Python and install the package **Instaloader** (`pip3 install instaloader`)
-- Copy .env.example to .env 
+- Copy .env.example to .env
 - Fill .env
 - Build the project with `yarn run build`
 
 ## Social supported
 
-### Facebook (Mobile mode, my recommendation is the best mode to scrap)
+### Facebook (New mode, combine mobile scraping and desktop scraping)
 
 - Download a profile
 
-`yarn run facebookMobile [profile1] [profile2] [--dev]`
-
-### ~~Facebook (Desktop)~~ (Temporarily disabled)
-
-- Download a profile~~
-
-`yarn run facebook [profile1] [profile2] [--fast-scroll] [--dev]`
+`yarn run facebook [profile1] [profile2] [--dev]`
 
 ### Tiktok
 
 - Get the session:
-    - Open https://www.tiktok.com/ in any browser
-    - Login in to your account
-    - Right click -> inspector -> networking
-    - Refresh page -> select any request that was made to the tiktok -> go to the Request Header sections -> Cookies
-    - Find in cookies sid_tt value. It usually looks like that: sid_tt=521kkadkasdaskdj4j213j12j312;
-    
+  - Open https://www.tiktok.com/ in any browser
+  - Login in to your account
+  - Right click -> inspector -> networking
+  - Refresh page -> select any request that was made to the tiktok -> go to the Request Header sections -> Cookies
+  - Find in cookies sid_tt value. It usually looks like that: sid_tt=521kkadkasdaskdj4j213j12j312;
 - Download a profile
 
 `yarn run tiktok [profile1] [profile2] --session="sid_tt=[youTokenSid]"`
@@ -63,12 +57,16 @@ If you find any bug in the code or have any improvements in mind then feel free 
 
 - Download stories of your feed
 
-`yarn run instagram --stories`
+`yarn run instagram stories [--alt-account] [--full]`
 
-- Download the feed from the last 3 days
+- Download the feed from the last 5 days or any days
 
-`yarn run instagram --feed`
+`yarn run instagram feed [--alt-account] [--full] [--days=5]`
+
+You can change the days to start scraping
+
+`yarn run instagram feed [--alt-account] [--full] [--days=15]`
 
 - Download a profile
 
-`yarn run instagram [profile1] [profile2] [--not-stories] [--not-highlights] [--not-tagged] [--not-igtv]`
+`yarn run instagram [profile1] [profile2] [--no-stories] [--no-highlights] [--no-tagged] [--no-igtv] [--alt-account] [--full]`

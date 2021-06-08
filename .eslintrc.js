@@ -4,18 +4,19 @@
 
 module.exports = {
   root: true,
-  extends: [
-    require.resolve('./eslint/airbnb-typescript'),
-    'prettier'
-  ],
+  extends: [require.resolve('./eslint/airbnb-typescript'), 'prettier'],
   rules: {
-    "no-console": 0,
-    "no-restricted-syntax": 0,
-    "no-await-in-loop": 0,
-    "no-continue": 0,
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { args: "all", argsIgnorePattern: "^_" },
+    'no-console': 0,
+    'no-restricted-syntax': 0,
+    'no-await-in-loop': 0,
+    'no-continue': 0,
+    'no-param-reassign': [
+      2,
+      { props: true, ignorePropertyModificationsFor: ['task'] },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { args: 'all', argsIgnorePattern: '^_' },
     ],
   },
-};
+}
