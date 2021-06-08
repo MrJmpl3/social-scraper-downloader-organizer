@@ -1,50 +1,98 @@
 import { cac } from 'cac'
 import dotenv from 'dotenv'
-import { Listr } from 'listr2'
-import { Context } from '@/interfaces/instagram'
+import { Listr, ListrBaseClassOptions } from 'listr2'
+import isNumeric from 'validator/lib/isNumeric'
+import {
+  ContextFeeds,
+  ContextProfiles,
+  ContextStories,
+} from '@/interfaces/instagram'
 import downloadFeed from '@/tasks/instagram/downloadFeed'
 import downloadProfile from '@/tasks/instagram/downloadProfile'
 import downloadStories from '@/tasks/instagram/downloadStories'
 
 dotenv.config()
 
-const parsed = cac().parse()
+const cli = cac()
 
-const optionStories = !!parsed.options.stories
-const optionFeed = !!parsed.options.feed
-const optionFull = !!parsed.options.full
-const optionAltAccount = !!parsed.options.altAccount
+const listrDefaultOptions: ListrBaseClassOptions = {
+  rendererOptions: {
+    showSubtasks: true,
+  },
+  concurrent: false,
+}
 
-const optionNotStories = !!parsed.options.notStories
-const optionNotHighlights = !!parsed.options.notHighlights
-const optionNotTagged = !!parsed.options.notTagged
-const optionNotIgtv = !!parsed.options.notIgtv
+cli
+  .command('stories')
+  .option('--alt-account', 'Use alt account')
+  .option('--full', 'Download full data')
+  .action(async (options) => {
+    const context: ContextStories = {
+      altAccount: options.altAccount,
+      full: options.full,
+    }
 
-;(async () => {
-  const context: Context = {
-    full: optionFull,
-    altAccount: optionAltAccount,
-    notHighlights: optionNotHighlights,
-    notIgtv: optionNotIgtv,
-    notStories: optionNotStories,
-    notTagged: optionNotTagged,
-  }
+    const tasks = new Listr<ContextStories>([], {
+      ...listrDefaultOptions,
+      ctx: context,
+    })
 
-  const tasks = new Listr<Context>([], {
-    rendererOptions: {
-      showSubtasks: true,
-    },
-    ctx: context,
-    concurrent: false,
+    tasks.add(downloadStories())
+
+    await tasks.run()
   })
 
-  if (optionStories) {
-    tasks.add(downloadStories())
-  } else if (optionFeed) {
+cli
+  .command('feed')
+  .option('--alt-account', 'Use alt account')
+  .option('--full', 'Download full data')
+  .option('--days [days]', 'Days to feed', { default: 5 })
+  .action(async (options) => {
+    if (!isNumeric(options.days)) {
+      throw new Error('Days option is not numeric')
+    }
+
+    const context: ContextFeeds = {
+      altAccount: options.altAccount,
+      full: options.full,
+      feedDays: options.days,
+    }
+
+    const tasks = new Listr<ContextFeeds>([], {
+      ...listrDefaultOptions,
+      ctx: context,
+    })
+
     tasks.add(downloadFeed())
-  } else {
+
+    await tasks.run()
+  })
+
+cli
+  .command('[...profiles]', 'Download profiles')
+  .option('--no-stories', 'Ignore stories')
+  .option('--no-highlights', 'Ignore highlights')
+  .option('--no-tagged', 'Ignore tagged')
+  .option('--no-igtv', 'Ignore igtv')
+  .option('--alt-account', 'Use alt account')
+  .option('--full', 'Download full data')
+  .action(async (profiles, options) => {
+    const context: ContextProfiles = {
+      full: options.full,
+      altAccount: options.altAccount,
+      highlights: options.highlights,
+      igtv: options.igtv,
+      stories: options.stories,
+      tagged: options.tagged,
+    }
+
+    const tasks = new Listr<ContextProfiles>([], {
+      ...listrDefaultOptions,
+      ctx: context,
+    })
+
     tasks.add({
-      title: `Download profiles`,
+      title: 'Download profiles',
       task: (_ctx, task) => {
         const taskProfiles = task.newListr([], {
           rendererOptions: { showSubtasks: true },
@@ -52,14 +100,15 @@ const optionNotIgtv = !!parsed.options.notIgtv
           concurrent: false,
         })
 
-        parsed.args.forEach((value) => {
+        profiles.forEach((value) => {
           taskProfiles.add(downloadProfile(value))
         })
 
         return taskProfiles
       },
     })
-  }
 
-  await tasks.run()
-})()
+    await tasks.run()
+  })
+
+cli.parse()

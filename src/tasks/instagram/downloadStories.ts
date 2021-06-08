@@ -1,9 +1,9 @@
 import { ListrTask } from 'listr2'
 import executeCommand from '@/functions/global/executeCommand'
-import { Context } from '@/interfaces/instagram'
+import { ContextStories } from '@/interfaces/instagram'
 import getFolderPath from '@/paths/instagram'
 
-const downloadStories = (): ListrTask<Context> => ({
+const downloadStories = (): ListrTask<ContextStories> => ({
   title: 'Download stories',
   task: async (ctx) => {
     const date = new Date()

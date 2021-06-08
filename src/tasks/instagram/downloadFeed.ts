@@ -1,16 +1,16 @@
 import { getDate, getMonth, getYear, subDays } from 'date-fns'
 import { ListrTask } from 'listr2'
 import executeCommand from '@/functions/global/executeCommand'
-import { Context } from '@/interfaces/instagram'
+import { ContextFeeds } from '@/interfaces/instagram'
 import getFolderPath from '@/paths/instagram'
 
-const downloadFeed = (): ListrTask<Context> => ({
+const downloadFeed = (): ListrTask<ContextFeeds> => ({
   title: 'Download feed',
   task: async (ctx) => {
     const date = new Date()
     const folder = getFolderPath()
 
-    const dateLimit = subDays(new Date(), 5)
+    const dateLimit = subDays(new Date(), ctx.feedDays)
     const dateFilter = `${getYear(dateLimit)}, ${
       getMonth(dateLimit) + 1
     }, ${getDate(dateLimit)}`
