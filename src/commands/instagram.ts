@@ -48,7 +48,7 @@ cli
   .option('--full', 'Download full data')
   .option('--days [days]', 'Days to feed', { default: 5 })
   .action(async (options) => {
-    if (!isNumeric(options.days)) {
+    if (!isNumeric(options.days.toString())) {
       throw new Error('Days option is not numeric')
     }
 
