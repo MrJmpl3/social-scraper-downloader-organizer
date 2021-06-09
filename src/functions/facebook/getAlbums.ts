@@ -14,10 +14,14 @@ const getAlbums = async (
 
   await page.waitForTimeout(waitTime)
 
-  await page.goto(`${accountUrl}/photos`)
+  await page.goto(`${accountUrl}/photos`, {
+    timeout: 120000
+  })
 
   await page.waitForTimeout(waitTime)
-  await page.waitForSelector('.timeline.albums')
+  await page.waitForSelector('.timeline.albums', {
+    timeout: 120000
+  })
 
   let moreButton = await page.$('#m_more_albums a')
   while (moreButton !== null) {
@@ -29,7 +33,9 @@ const getAlbums = async (
     moreButton = await page.$('#m_more_albums a')
   }
 
-  await page.waitForSelector('.timeline.albums a')
+  await page.waitForSelector('.timeline.albums a', {
+    timeout: 120000
+  })
 
   const albumNodes = await page.$$('.timeline.albums a')
 

@@ -22,13 +22,17 @@ const downloadPhotos = (
     const page = await browserInstance.newPage()
 
     // Move to url profile
-    await page.goto(accountUrl)
+    await page.goto(accountUrl, {
+      timeout: 120000
+    })
     task.output = `Go to: ${accountUrl}`
 
     // Wait to prevent block of Facebook
     await page.waitForTimeout(ctx.waitTime)
     // The h3 selector is the profile name if that is loaded, all page is loaded
-    await page.waitForSelector('h3')
+    await page.waitForSelector('h3', {
+      timeout: 120000
+    })
 
     task.output = 'Getting name of account'
 

@@ -13,9 +13,13 @@ const getPhotosViewer = async (
   let newAccountData = { ...accountData }
 
   await page.waitForTimeout(waitTime)
-  await page.goto(album.url)
+  await page.goto(album.url, {
+    timeout: 120000
+  })
   await page.waitForTimeout(waitTime)
-  await page.waitForSelector('div[role="main"]')
+  await page.waitForSelector('div[role="main"]', {
+    timeout: 120000
+  })
 
   let moreDiv = await page.$('#m_more_photos')
   while (moreDiv !== null) {

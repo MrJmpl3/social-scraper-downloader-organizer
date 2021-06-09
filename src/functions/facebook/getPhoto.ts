@@ -16,10 +16,14 @@ const getPhoto = async (
     photoViewer.url.replace(
       'https://m.facebook.com/',
       'https://www.facebook.com/'
-    )
+    ), {
+      timeout: 120000
+    }
   )
   await page.waitForTimeout(waitTime)
-  await page.waitForSelector('div[data-pagelet="MediaViewerPhoto"]')
+  await page.waitForSelector('div[data-pagelet="MediaViewerPhoto"]', {
+    timeout: 120000
+  })
 
   const photoNode = await page.$('div[data-pagelet="MediaViewerPhoto"] img')
   if (isNil(photoNode)) {

@@ -21,6 +21,7 @@ try {
 
     const browser = await puppeteer.launch({
       headless: !optionDev,
+      timeout: 120000
     })
 
     const tasks = new Listr<Context>([login(browser)], {
