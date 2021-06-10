@@ -1,13 +1,14 @@
+import delay from 'delay'
 import fs from 'fs-extra'
 import { ListrTask } from 'listr2'
 import { isNil } from 'lodash'
 import { scrapePosts } from '@/functions/tiktok/api'
-import downloadVideo from '@/functions/tiktok/downloadVideo'
 import {
   addInVideoDownloaded,
   existsInVideoDownloaded,
   syncVideoDownloaded,
 } from '@/functions/tiktok/dataManager'
+import downloadVideo from '@/functions/tiktok/downloadVideo'
 import { Context, TypePost, Data } from '@/interfaces/tiktok'
 import { getDataFilePath } from '@/paths/tiktok'
 
@@ -20,6 +21,10 @@ const downloadVideosByType = (
     let videoWithError = 0
 
     const posts = await scrapePosts(profile, type, ctx.session)
+
+    // Wait 1 minute after request to prevent temp block of Tiktok
+    await delay(60 * 1000)
+
     if (posts === null) {
       throw new Error(`Error to scrape posts`)
     }
@@ -125,10 +130,16 @@ const downloadVideosByType = (
         JSON.stringify(videoDownloadedData)
       )
 
+      // Wait 1 minute after download to prevent temp block of Tiktok
+      await delay(60 * 1000)
+
       if (videoWithError > 0) {
         throw new Error('Error when download some videos of this profile')
       }
     }
+
+    // Wait 3 minutes after to scrapings and downloads to prevent temp block of Tiktok
+    await delay(3 * 60 * 1000)
   },
 })
 

@@ -1,4 +1,5 @@
 import { getDate, getMonth, getYear, subDays } from 'date-fns'
+import delay from 'delay'
 import { ListrTask } from 'listr2'
 import executeCommand from '@/functions/global/executeCommand'
 import { ContextFeeds } from '@/interfaces/instagram'
@@ -39,6 +40,9 @@ const downloadFeed = (): ListrTask<ContextFeeds> => ({
     if (!ctx.full) {
       instaloaderArgs.push('--fast-update')
     }
+
+    // Wait 1 minute before to execute the scraper to prevent temp block of Instagram
+    await delay(60 * 1000)
 
     await executeCommand('instaloader', instaloaderArgs, folder, date)
   },

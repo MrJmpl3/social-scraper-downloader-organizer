@@ -1,5 +1,6 @@
 import executeCommand from '@/functions/global/executeCommand'
 import getFolderPath from '@/paths/instagram'
+import delay from 'delay'
 
 const downloadTagged = async (
   profile: string,
@@ -36,6 +37,9 @@ const downloadTagged = async (
   if (!full) {
     instaloaderArgs.push('--fast-update')
   }
+
+  // Wait 1 minute before to execute the scraper to prevent temp block of Instagram
+  await delay(60 * 1000)
 
   await executeCommand('instaloader', instaloaderArgs, folder, date)
 }
