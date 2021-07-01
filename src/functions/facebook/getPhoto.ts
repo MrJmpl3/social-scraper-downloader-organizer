@@ -1,7 +1,7 @@
-import { isNil } from 'lodash'
-import { Page } from 'puppeteer'
-import { addPhoto } from '@/functions/facebook/dataManager'
-import { Album, Data, Photo, PhotoViewer } from '@/interfaces/facebook'
+import { isNil } from 'lodash';
+import { Page } from 'puppeteer';
+import { addPhoto } from '@/functions/facebook/dataManager';
+import { Album, Data, Photo, PhotoViewer } from '@/interfaces/facebook';
 
 const getPhoto = async (
   page: Page,
@@ -11,38 +11,39 @@ const getPhoto = async (
   photoViewer: Readonly<PhotoViewer>,
   waitTime: number
 ): Promise<Photo> => {
-  await page.waitForTimeout(waitTime)
+  await page.waitForTimeout(waitTime);
   await page.goto(
     photoViewer.url.replace(
       'https://m.facebook.com/',
       'https://www.facebook.com/'
-    ), {
-      timeout: 120000
+    ),
+    {
+      timeout: 120000,
     }
-  )
-  await page.waitForTimeout(waitTime)
+  );
+  await page.waitForTimeout(waitTime);
   await page.waitForSelector('div[data-pagelet="MediaViewerPhoto"]', {
-    timeout: 120000
-  })
+    timeout: 120000,
+  });
 
-  const photoNode = await page.$('div[data-pagelet="MediaViewerPhoto"] img')
+  const photoNode = await page.$('div[data-pagelet="MediaViewerPhoto"] img');
   if (isNil(photoNode)) {
-    throw new Error('Cannot get photoNode')
+    throw new Error('Cannot get photoNode');
   }
 
-  const photoUrl = await photoNode.evaluate((el) => el.getAttribute('src'))
+  const photoUrl = await photoNode.evaluate((el) => el.getAttribute('src'));
   if (isNil(photoUrl)) {
-    throw new Error('Cannot get photoUrl')
+    throw new Error('Cannot get photoUrl');
   }
 
   const photo = {
     url: photoUrl,
     downloaded: false,
-  }
+  };
 
-  addPhoto(accountName, accountData, album, photoViewer, photo)
+  addPhoto(accountName, accountData, album, photoViewer, photo);
 
-  return photo
-}
+  return photo;
+};
 
-export default getPhoto
+export default getPhoto;

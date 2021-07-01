@@ -1,26 +1,26 @@
-import { cac } from 'cac'
-import dotenv from 'dotenv'
-import { Listr, ListrBaseClassOptions } from 'listr2'
-import isNumeric from 'validator/lib/isNumeric'
+import { cac } from 'cac';
+import dotenv from 'dotenv';
+import { Listr, ListrBaseClassOptions } from 'listr2';
+import isNumeric from 'validator/lib/isNumeric';
 import {
   ContextFeeds,
   ContextProfiles,
   ContextStories,
-} from '@/interfaces/instagram'
-import downloadFeed from '@/tasks/instagram/downloadFeed'
-import downloadProfile from '@/tasks/instagram/downloadProfile'
-import downloadStories from '@/tasks/instagram/downloadStories'
+} from '@/interfaces/instagram';
+import downloadFeed from '@/tasks/instagram/downloadFeed';
+import downloadProfile from '@/tasks/instagram/downloadProfile';
+import downloadStories from '@/tasks/instagram/downloadStories';
 
-dotenv.config()
+dotenv.config();
 
-const cli = cac()
+const cli = cac();
 
 const listrDefaultOptions: ListrBaseClassOptions = {
   rendererOptions: {
     showSubtasks: true,
   },
   concurrent: false,
-}
+};
 
 cli
   .command('stories')
@@ -30,17 +30,17 @@ cli
     const context: ContextStories = {
       altAccount: options.altAccount,
       full: options.full,
-    }
+    };
 
     const tasks = new Listr<ContextStories>([], {
       ...listrDefaultOptions,
       ctx: context,
-    })
+    });
 
-    tasks.add(downloadStories())
+    tasks.add(downloadStories());
 
-    await tasks.run()
-  })
+    await tasks.run();
+  });
 
 cli
   .command('feed')
@@ -49,24 +49,24 @@ cli
   .option('--days [days]', 'Days to feed', { default: 5 })
   .action(async (options) => {
     if (!isNumeric(options.days.toString())) {
-      throw new Error('Days option is not numeric')
+      throw new Error('Days option is not numeric');
     }
 
     const context: ContextFeeds = {
       altAccount: options.altAccount,
       full: options.full,
       feedDays: options.days,
-    }
+    };
 
     const tasks = new Listr<ContextFeeds>([], {
       ...listrDefaultOptions,
       ctx: context,
-    })
+    });
 
-    tasks.add(downloadFeed())
+    tasks.add(downloadFeed());
 
-    await tasks.run()
-  })
+    await tasks.run();
+  });
 
 cli
   .command('[...profiles]', 'Download profiles')
@@ -84,12 +84,12 @@ cli
       igtv: options.igtv,
       stories: options.stories,
       tagged: options.tagged,
-    }
+    };
 
     const tasks = new Listr<ContextProfiles>([], {
       ...listrDefaultOptions,
       ctx: context,
-    })
+    });
 
     tasks.add({
       title: 'Download profiles',
@@ -98,17 +98,17 @@ cli
           rendererOptions: { showSubtasks: true },
           ctx: context,
           concurrent: false,
-        })
+        });
 
         profiles.forEach((value) => {
-          taskProfiles.add(downloadProfile(value))
-        })
+          taskProfiles.add(downloadProfile(value));
+        });
 
-        return taskProfiles
+        return taskProfiles;
       },
-    })
+    });
 
-    await tasks.run()
-  })
+    await tasks.run();
+  });
 
-cli.parse()
+cli.parse();

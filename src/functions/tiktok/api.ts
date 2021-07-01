@@ -4,8 +4,8 @@ import {
   Result,
   user,
   UserMetadata,
-} from 'tiktok-scraper'
-import { TypePost } from '@/interfaces/tiktok'
+} from 'tiktok-scraper';
+import { TypePost } from '@/interfaces/tiktok';
 
 export const scrapeProfile = async (
   name: string,
@@ -14,11 +14,11 @@ export const scrapeProfile = async (
   try {
     return await getUserProfileInfo(name, {
       sessionList: [session],
-    })
+    });
   } catch {
-    return null
+    return null;
   }
-}
+};
 
 export const scrapePosts = async (
   name: string,
@@ -32,7 +32,7 @@ export const scrapePosts = async (
         hdVideo: true,
         noWaterMark: true,
         sessionList: [session],
-      })
+      });
     }
 
     if (type === 'advance') {
@@ -40,17 +40,17 @@ export const scrapePosts = async (
         number: 9999,
         hdVideo: true,
         sessionList: [session],
-      })
+      });
     }
 
     return await user(name, {
       number: 9999,
       sessionList: [session],
-    })
+    });
   } catch {
-    return null
+    return null;
   }
-}
+};
 
 export const scrapeVideo = async (
   url: string,
@@ -63,20 +63,20 @@ export const scrapeVideo = async (
         sessionList: [session],
         hdVideo: true,
         noWaterMark: true,
-      })
+      });
     }
 
     if (type === 'advance') {
       return await getVideoMeta(url, {
         sessionList: [session],
         hdVideo: true,
-      })
+      });
     }
 
     return await getVideoMeta(url, {
       sessionList: [session],
-    })
+    });
   } catch {
-    return null
+    return null;
   }
-}
+};

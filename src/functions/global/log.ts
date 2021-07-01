@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import fs from 'fs-extra'
+import { resolve } from 'path';
+import fs from 'fs-extra';
 
 const log = (
   folder: string,
@@ -7,11 +7,11 @@ const log = (
   text: string,
   newLine = true
 ): void => {
-  fs.ensureDirSync(folder)
+  fs.ensureDirSync(folder);
   fs.appendFileSync(
     resolve(folder, fileName),
     `${text}${newLine ? '\r\n' : ''}`
-  )
-}
+  );
+};
 
-export default log
+export default log;

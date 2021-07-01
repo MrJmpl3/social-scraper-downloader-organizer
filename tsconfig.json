@@ -3,7 +3,10 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["es6", "DOM"],
+    "lib": [
+      "es6",
+      "DOM"
+    ],
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
@@ -12,24 +15,35 @@
     "downlevelIteration": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
-    "types": ["@types/node"],
+    "types": [
+      "@types/node"
+    ],
     "paths": {
-      "@/functions/*": ["./src/functions/*"],
-      "@/interfaces/*": ["./src/interfaces/*"],
-      "@/paths/*": ["./src/paths/*"],
-      "@/subtasks/*": ["./src/subtasks/*"],
-      "@/tasks/*": ["./src/tasks/*"],
-      "@/utils/*": ["./src/utils/*"]
+      "@/commands/*": [
+        "./src/commands/*"
+      ],
+      "@/functions/*": [
+        "./src/functions/*"
+      ],
+      "@/interfaces/*": [
+        "./src/interfaces/*"
+      ],
+      "@/paths/*": [
+        "./src/paths/*"
+      ],
+      "@/subtasks/*": [
+        "./src/subtasks/*"
+      ],
+      "@/tasks/*": [
+        "./src/tasks/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ]
     }
   },
-  "include": [
-    "./src/**.ts",
-    "./tasks/**/**.ts",
-    "./utils/**/**.ts",
-    ".prettierrc.js",
-    ".eslintrc.js",
-    "*.config.js",
-    "*.config.ts"
-  ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

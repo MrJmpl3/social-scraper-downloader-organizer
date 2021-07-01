@@ -1,3 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
-db/
-dist/
+/db
+/dist
+/node_modules
+.eslintrc.js
+webpack.config.js

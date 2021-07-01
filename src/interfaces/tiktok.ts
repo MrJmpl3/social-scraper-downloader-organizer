@@ -1,14 +1,14 @@
 export interface Context {
-  session: string
+  session: string;
 }
 
-export type TypePost = 'normal' | 'advance' | 'advanceplus'
+export type TypePost = 'normal' | 'advance' | 'advanceplus';
 
 export interface Data {
-  id: string
-  version: number
+  id: string;
+  version: number;
   videos: {
-    id: string
-    type: TypePost
-  }[]
+    id: string;
+    type: TypePost;
+  }[];
 }

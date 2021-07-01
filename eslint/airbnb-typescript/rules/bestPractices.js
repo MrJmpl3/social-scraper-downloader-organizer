@@ -410,4 +410,4 @@ module.exports = {
     // require or disallow Yoda conditions
     yoda: 'error',
   },
-}
+};

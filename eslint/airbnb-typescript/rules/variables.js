@@ -4,8 +4,8 @@
  * File created to GLEN SOFT company.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-unresolved
-const confusingBrowserGlobals = require('confusing-browser-globals')
+// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-unresolved,@typescript-eslint/no-unsafe-assignment
+const confusingBrowserGlobals = require('confusing-browser-globals');
 
 module.exports = {
   rules: {
@@ -59,12 +59,7 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      {
-        vars: 'all',
-        ignoreRestSiblings: true,
-        args: 'all',
-        argsIgnorePattern: '^_',
-      },
+      { vars: 'all', args: 'after-used', ignoreRestSiblings: true },
     ],
 
     // disallow use of variables before they are defined
@@ -74,4 +69,4 @@ module.exports = {
       { functions: true, classes: true, variables: true },
     ],
   },
-}
+};

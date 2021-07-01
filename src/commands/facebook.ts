@@ -1,28 +1,28 @@
-import cac from 'cac'
-import chalk from 'chalk'
-import dotenv from 'dotenv'
-import { Listr } from 'listr2'
-import puppeteer from 'puppeteer'
-import { Context } from '@/interfaces/facebook'
-import downloadPhotos from '@/tasks/facebook/downloadPhotos'
-import login from '@/tasks/facebook/login'
+import cac from 'cac';
+import chalk from 'chalk';
+import dotenv from 'dotenv';
+import { Listr } from 'listr2';
+import puppeteer from 'puppeteer';
+import { Context } from '@/interfaces/facebook';
+import downloadPhotos from '@/tasks/facebook/downloadPhotos';
+import login from '@/tasks/facebook/login';
 
-dotenv.config()
+dotenv.config();
 
-const parsed = cac().parse()
-const optionDev = !!parsed.options.dev
-const optionWaitTime = parsed.options.waitTime ?? 10 * 1000
+const parsed = cac().parse();
+const optionDev = !!parsed.options.dev;
+const optionWaitTime = parsed.options.waitTime ?? 10 * 1000;
 
 try {
-  ;(async () => {
+  (async () => {
     const context: Context = {
       waitTime: optionWaitTime,
-    }
+    };
 
     const browser = await puppeteer.launch({
       headless: !optionDev,
-      timeout: 120000
-    })
+      timeout: 120000,
+    });
 
     const tasks = new Listr<Context>([login(browser)], {
       rendererOptions: {
@@ -32,7 +32,7 @@ try {
       ctx: context,
       concurrent: false,
       exitOnError: false,
-    })
+    });
 
     parsed.args.forEach((value) => {
       tasks.add(
@@ -40,15 +40,15 @@ try {
           browser,
           value.replace('https://www.facebook.com/', 'https://m.facebook.com/')
         )
-      )
-    })
+      );
+    });
 
-    await tasks.run()
+    await tasks.run();
 
     if (!optionDev) {
-      await browser.close()
+      await browser.close();
     }
-  })()
+  })();
 } catch (e) {
-  console.log(chalk.red(e))
+  console.log(chalk.red(e));
 }

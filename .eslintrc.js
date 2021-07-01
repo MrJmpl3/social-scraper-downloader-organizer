@@ -1,9 +1,11 @@
-// Inspired from:
-// airbnb/eslint-config-airbnb-base v14.2.1
-// iamturns/eslint-config-airbnb-typescript v12.3.1
+const { resolve } = require('path');
 
 module.exports = {
   root: true,
+  parserOptions: {
+    project: resolve(__dirname, './tsconfig.json'),
+    tsconfigRootDir: __dirname,
+  },
   extends: [require.resolve('./eslint/airbnb-typescript'), 'prettier'],
   rules: {
     'no-console': 0,
@@ -14,9 +16,14 @@ module.exports = {
       2,
       { props: true, ignorePropertyModificationsFor: ['task'] },
     ],
+    '@typescript-eslint/no-floating-promises': 0,
+    '@typescript-eslint/no-unsafe-assignment': 0,
+    '@typescript-eslint/no-unsafe-call': 0,
+    '@typescript-eslint/no-unsafe-member-access': 0,
+    '@typescript-eslint/restrict-template-expressions': 0,
     '@typescript-eslint/no-unused-vars': [
       'error',
       { args: 'all', argsIgnorePattern: '^_' },
     ],
   },
-}
+};
