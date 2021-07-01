@@ -5,15 +5,23 @@ import {
   user,
   UserMetadata,
 } from 'tiktok-scraper';
-import { TypePost } from '@/interfaces/tiktok';
+import { VideoType } from '@/interfaces/tiktok';
 
-export const scrapeProfile = async (
+export const scrapeAccount = async (
   name: string,
   session: string
 ): Promise<UserMetadata | null> => {
   try {
+    const optionalApiParams: {
+      sessionList?: string[];
+    } = {};
+
+    if (session) {
+      optionalApiParams.sessionList = [session];
+    }
+
     return await getUserProfileInfo(name, {
-      sessionList: [session],
+      ...optionalApiParams,
     });
   } catch {
     return null;
@@ -22,16 +30,24 @@ export const scrapeProfile = async (
 
 export const scrapePosts = async (
   name: string,
-  type: TypePost,
+  type: VideoType,
   session: string
 ): Promise<Result | null> => {
   try {
+    const optionalApiParams: {
+      sessionList?: string[];
+    } = {};
+
+    if (session) {
+      optionalApiParams.sessionList = [session];
+    }
+
     if (type === 'advanceplus') {
       return await user(name, {
         number: 9999,
         hdVideo: true,
         noWaterMark: true,
-        sessionList: [session],
+        ...optionalApiParams,
       });
     }
 
@@ -39,13 +55,13 @@ export const scrapePosts = async (
       return await user(name, {
         number: 9999,
         hdVideo: true,
-        sessionList: [session],
+        ...optionalApiParams,
       });
     }
 
     return await user(name, {
       number: 9999,
-      sessionList: [session],
+      ...optionalApiParams,
     });
   } catch {
     return null;
@@ -54,27 +70,35 @@ export const scrapePosts = async (
 
 export const scrapeVideo = async (
   url: string,
-  type: TypePost,
+  type: VideoType,
   session: string
-) => {
+): Promise<Result | null> => {
   try {
+    const optionalApiParams: {
+      sessionList?: string[];
+    } = {};
+
+    if (session) {
+      optionalApiParams.sessionList = [session];
+    }
+
     if (type === 'advanceplus') {
       return await getVideoMeta(url, {
-        sessionList: [session],
         hdVideo: true,
         noWaterMark: true,
+        ...optionalApiParams,
       });
     }
 
     if (type === 'advance') {
       return await getVideoMeta(url, {
-        sessionList: [session],
         hdVideo: true,
+        ...optionalApiParams,
       });
     }
 
     return await getVideoMeta(url, {
-      sessionList: [session],
+      ...optionalApiParams,
     });
   } catch {
     return null;

@@ -1,7 +1,8 @@
-import axios from 'axios';
+import stream from 'stream';
+import { promisify } from 'util';
 import * as fs from 'fs-extra';
-import { Headers } from 'tiktok-scraper';
-import { TypePost } from '@/interfaces/tiktok';
+import got from 'got';
+import { VideoType } from '@/interfaces/tiktok';
 import {
   existsVideoFile,
   getVideoFilePath,
@@ -9,81 +10,67 @@ import {
   getVideoTrashFilePath,
 } from '@/paths/tiktok';
 
+const pipeline = promisify(stream.pipeline);
+
 const downloadVideo = async (
-  profile: string,
-  url: string,
-  headers: Headers,
-  postId: string,
-  type: TypePost
-): Promise<'successfull' | 'zero-size'> => {
-  const destination = getVideoTempFilePath(profile, postId, type);
+  accountName: string,
+  videoUrl: string,
+  videoId: string,
+  videoType: VideoType
+): Promise<void> => {
+  const destination = getVideoTempFilePath(accountName, videoId, videoType);
 
   if (fs.existsSync(destination)) {
     fs.moveSync(
       destination,
-      getVideoTrashFilePath(profile, postId, type, true)
+      getVideoTrashFilePath(accountName, videoId, videoType)
     );
   }
 
-  if (fs.existsSync(destination)) {
-    fs.moveSync(
+  await pipeline(
+    got.stream(videoUrl, {
+      method: 'GET',
+      timeout: 1000 * 60 * 3,
+    }),
+    fs.createWriteStream(destination)
+  );
+
+  if (fs.existsSync(destination) && fs.statSync(destination).size !== 0) {
+    if (
+      videoType === 'advanceplus' &&
+      existsVideoFile(accountName, videoId, 'advance')
+    ) {
+      fs.moveSync(
+        getVideoFilePath(accountName, videoId, 'advance'),
+        getVideoTrashFilePath(accountName, videoId, 'advance')
+      );
+    } else if (
+      videoType === 'advanceplus' &&
+      existsVideoFile(accountName, videoId, 'normal')
+    ) {
+      fs.moveSync(
+        getVideoFilePath(accountName, videoId, 'normal'),
+        getVideoTrashFilePath(accountName, videoId, 'normal')
+      );
+    } else if (
+      videoType === 'advance' &&
+      existsVideoFile(accountName, videoId, 'normal')
+    ) {
+      fs.moveSync(
+        getVideoFilePath(accountName, videoId, 'normal'),
+        getVideoTrashFilePath(accountName, videoId, 'normal')
+      );
+    }
+
+    fs.renameSync(
       destination,
-      getVideoTrashFilePath(profile, postId, type, true)
+      getVideoFilePath(accountName, videoId, videoType)
+    );
+  } else {
+    throw new Error(
+      'Error when download video or the video download with zero size'
     );
   }
-
-  const { data: dataResponse, headers: headersResponse } = await axios({
-    url,
-    method: 'GET',
-    responseType: 'stream',
-    timeout: 1000 * 60 * 3,
-    headers,
-  });
-
-  if (headersResponse['content-length'] === '0') {
-    return new Promise((resolve) => resolve('zero-size'));
-  }
-
-  const writer = fs.createWriteStream(destination);
-  dataResponse.pipe(writer);
-
-  return new Promise((resolve, reject) => {
-    writer.on('finish', () => {
-      if (
-        type === 'advanceplus' &&
-        existsVideoFile(profile, postId, 'advance')
-      ) {
-        fs.moveSync(
-          getVideoFilePath(profile, postId, 'advance'),
-          getVideoTrashFilePath(profile, postId, 'advance')
-        );
-      } else if (
-        type === 'advanceplus' &&
-        existsVideoFile(profile, postId, 'normal')
-      ) {
-        fs.moveSync(
-          getVideoFilePath(profile, postId, 'normal'),
-          getVideoTrashFilePath(profile, postId, 'normal')
-        );
-      } else if (
-        type === 'advance' &&
-        existsVideoFile(profile, postId, 'normal')
-      ) {
-        fs.moveSync(
-          getVideoFilePath(profile, postId, 'normal'),
-          getVideoTrashFilePath(profile, postId, 'normal')
-        );
-      }
-
-      if (fs.existsSync(destination)) {
-        fs.renameSync(destination, getVideoFilePath(profile, postId, type));
-      }
-
-      return resolve('successfull');
-    });
-
-    writer.on('error', reject);
-  });
 };
 
 export default downloadVideo;
